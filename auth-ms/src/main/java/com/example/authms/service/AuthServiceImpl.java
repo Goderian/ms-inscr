@@ -1,6 +1,7 @@
 package com.example.authms.service;
 
 import com.example.authms.dto.RegisterRequest;
+import com.example.authms.exception.UserNotFoundException;
 import com.example.authms.model.Role;
 import com.example.authms.model.User;
 import com.example.authms.repository.RoleRepository;
@@ -25,7 +26,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public User saveUser(RegisterRequest registerRequest) {
         User user = userRepository.findByUsername(registerRequest.getUsername());
-        if (user != null) throw new RuntimeException("user already exists");
+        if (user != null) throw new UserNotFoundException("user already exists");
         if (!registerRequest.getPassword().equals(registerRequest.getConfirmedPassword())) throw new RuntimeException("Please confirm your password!");
         User user1 = new User();
         user1.setUsername(registerRequest.getUsername());
